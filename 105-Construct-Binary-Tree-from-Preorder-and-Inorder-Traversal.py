@@ -6,15 +6,22 @@
 #         self.right = right
 class Solution:
     def buildTree(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
-        # print(segment)
-        if not inorder or not preorder:
-            return None
-        rootVal = preorder[0]
-        rootIdx = inorder.index(rootVal)
-        root = TreeNode(rootVal)
-        root.left = self.buildTree(preorder[1:rootIdx + 1], inorder[:rootIdx])
-        root.right = self.buildTree(preorder[rootIdx + 1:], inorder[rootIdx + 1:])
-        return root
+        preorder = collections.deque(preorder)
+
+        hashMap = {}
+        for idx, num in enumerate(inorder):
+            hashMap[num] = idx
+
+        def helper(start: int, end: int):
+            if start > end:
+                return None
+            root = TreeNode(preorder.popleft())
+            mid = hashMap[root.val]
+            root.left = helper(start, mid - 1)
+            root.right = helper(mid + 1, end)
+            return root
+            
+        return helper(0, len(preorder) - 1)
         
         
 
