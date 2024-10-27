@@ -9,19 +9,11 @@ class Solution:
         # print(segment)
         if not inorder or not preorder:
             return None
-        rootIdx = -1
-        val = 0
-        for num in preorder:
-            if num in inorder:
-                # print(num)
-                rootIdx = inorder.index(num)
-                val = num
-                break
-        # print(\rootIdx\, rootIdx)
-        root = TreeNode(num)
-        preorder.remove(val)
-        root.left = self.buildTree(preorder, inorder[:rootIdx]) if rootIdx != 0 else None
-        root.right = self.buildTree(preorder, inorder[rootIdx + 1:]) if rootIdx != len(inorder) else None
+        rootVal = preorder[0]
+        rootIdx = inorder.index(rootVal)
+        root = TreeNode(rootVal)
+        root.left = self.buildTree(preorder[1:rootIdx + 1], inorder[:rootIdx])
+        root.right = self.buildTree(preorder[rootIdx + 1:], inorder[rootIdx + 1:])
         return root
         
         
