@@ -3,12 +3,16 @@ class Solution:
         \\\
         Do not return anything, modify matrix in-place instead.
         \\\
-        # len(matrix) // 2 layers
-        for i in range(len(matrix) // 2):
-            # iterate across the top row
-            for j in range(i, len(matrix) - i - 1):
-                temp = matrix[i][j]
-                matrix[i][j] = matrix[len(matrix) - j - 1][i]
-                matrix[len(matrix) - j - 1][i] = matrix[len(matrix) - i - 1][len(matrix) - j - 1]
-                matrix[len(matrix) - i - 1][len(matrix) - j - 1] = matrix[j][len(matrix) - i - 1]
-                matrix[j][len(matrix) - i - 1] = temp
+        l,r = 0, len(matrix) - 1
+
+        while l < r: 
+            for i in range(r - l):
+                top, bottom = l, r
+                topLeft = matrix[top][l + i]
+                matrix[top][l + i] = matrix[bottom - i][l]
+                matrix[bottom - i][l] = matrix[bottom][r - i]
+                matrix[bottom][r - i] = matrix[top + i][r]
+                matrix[top + i][r] = topLeft
+            l += 1
+            r -= 1
+                
